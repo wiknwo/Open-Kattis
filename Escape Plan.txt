@@ -1,0 +1,45 @@
+ESCAPE PLAN
+
+Write a program that will figure out how many robots can escape a coming storm by running to and hiding in holes.
+
+- You have identified the locations of several of these holes, but each of them is large enough to fit only one robot.
+
+- Assume that each robot that can escape travels from its current position directly to a hole. All robots travel at a speed of 10 meters per second.
+
+________INPUT________
+
+- The input will have multiple scenarios, at most 10.
+
+- Each scenario starts with an integer 0 < m <= 200 indicating the number of robots in the field, followed by m lines indicating the x and y coordinates of each robot.
+
+- integer 0 < n <= 200 indicating the number of holes, followed by n lines indicating the x and y coordinates of each hole.
+
+- All coordinates will be floating-point numbers, given in meters. 
+
+- No two holes will be at the same location, and no two robots will be at the same location. 
+
+- The end of input is signified by m = 0
+
+________OUTPUT________
+
+For each scenario
+
+- print the scenario number
+- print how many robots could escape in 5 seconds
+- 10 seconds
+- 20 seconds
+- Follow the format demonstrated in the sample output below.
+- Print a blank line after each scenario. 
+- You may assume that the answers will not change if the threshold times (5, 10, or 20 seconds) are perturbed by up to 10−6 seconds.
+
+________SOLUTION________
+
+1. All robots move to the closest hole to them at a speed of 10 metres every second from their current position
+
+2. After 5 seconds count how many robots have made it to a hole
+
+3. After 10 seconds, count how many robots have made it to a hole
+
+4. After 20 seconds, count how many robots have made it to a hole
+
+Distance = Speed * Time
