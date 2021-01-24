@@ -26,6 +26,7 @@
 from pprint import pprint
 from collections import defaultdict
 import math
+import sys
 
 def euclidean_distance(a, b):
     return math.sqrt((b[0] - a[0])**2 + (b[1] - a[1])**2)
@@ -46,39 +47,63 @@ def calculate_closest_hole(robots, holes):
     return robots_closest_holes
 
 def move_robot(robot, time, hole):
+    robot_to_move = robot
     xreached = False
     yreached = False
-    escaped = False
+    holereached = False
+    distance_between_robot_hole_x = abs(robot[0] - hole[0])
+    distance_between_robot_hole_y = abs(robot[1] - hole[1])
     for i in range(0, time):
-        if robot[0] >= hole[0]:
-            xreached = True
-        if robot[1] >= hole[1]:
-            yreached = True
         if xreached and yreached:
-            escaped = True
-            return robot
-        if robot[0] < hole[0]:
-            robot[0] = robot[0] + 10
+            holereached = True
+            print("x and y reached")
+            return holereached # Here
+        if robot_to_move[0] == hole[0]:
+            xreached = True
+            print("x reached")
+        if robot_to_move[1] == hole[1]:
+            yreached = True
+            print("yreached")
+        if distance_between_robot_hole_x < 10 and distance_between_robot_hole_y < 10:
+            print("Robot {} within < 10m of hole so reached".format(robot))
+            holereached = True
+            return holereached
+        if distance_between_robot_hole_x < 10:
+            xreached = True
+            print("Robot {} within < 10m of hole in x direction so reached in x".format(robot))
+        if distance_between_robot_hole_y < 10:
+            yreached = True
+            print("Robot {} within < 10m of hole in y direction so reached in y".format(robot))
+        if robot_to_move[0] < hole[0]:
+            robot_to_move[0] = robot_to_move[0] + 10
+            distance_between_robot_hole_x = abs(robot_to_move[0] - hole[0])
+            print("Robot {} moved forward 10m in x direction".format(robot))
+            
         if robot[1] < hole[1]:
-            robot[1] = robot[1] + 10 
-    return escaped
+            robot[1] = robot_to_move[1] + 10
+            distance_between_robot_hole_y = abs(robot_to_move[1] - hole[1])
+            print("Robot {} moved up 10m in y direction".format(robot))
+            
+        if robot_to_move[0] > hole[0]:
+            robot_to_move[0] = robot_to_move[0] - 10
+            distance_between_robot_hole_x = abs(robot_to_move[0] - hole[0])
+            print("Robot {} moved back 10m in x direction".format(robot))
+            
+        if robot_to_move[1] > hole[1]:
+            robot_to_move[1] = robot_to_move[1] - 10
+            distance_between_robot_hole_y = abs(robot_to_move[1] - hole[1])
+            print("Robot {} moved down 10m in y direction".format(robot))
+            
+    return holereached
 
 def main():
-    # File Processing
-    path = 'C:\\Users\\willi\\Documents\\aCraft\\Open-Kattis\\escapeplan\\sample.in'
-    data = [] # list to hold lines in file
+    # Reading data in from console
     scenarios = [] # list to hold scenarios
-    with open(path, 'r') as f:
-        for line in f:
-            data.append(line.rstrip())
-   # print(data) # Check if data was read in correctly
-    linenumber = 0 # Count which line in the file the data has been processed for
     numberofrobots = -1 # number of robots on the field
 
     # do while loop in python
     while True:
-        numberofrobots = int(data[linenumber]) 
-        linenumber = linenumber + 1
+        numberofrobots = int(input("Enter numer of robots: ")) 
 
         # Leave loop when there are no more scenarios left
         if numberofrobots == 0:
@@ -87,28 +112,23 @@ def main():
         # Getting robot coordinates
         robots = []
         for i in range(0, numberofrobots):
-            coordinates = data[linenumber].split(" ")
+            coordinates = input("Enter coordinates of robot separated by space: ").split(" ")
             robots.append([float(coordinates[0]), float(coordinates[1])])
-            linenumber = linenumber + 1
-
-        numberofholes = int(data[linenumber])
-        linenumber = linenumber + 1
+        
+        numberofholes = int(input("Enter number of holes: "))
 
         # Getting coordinates of holes
         holes = []
         for i in range(0, numberofholes):
-            coordinates = data[linenumber].split(" ")
+            coordinates = input("Enter coordinates of hole separated by space: ").split(" ")
             holes.append([float(coordinates[0]), float(coordinates[1])])
-            linenumber = linenumber + 1
 
         # Record scenario
         scenarios.append([robots, holes])
 
     # Compile output file
-    path = 'C:\\Users\\willi\\Documents\\aCraft\\Open-Kattis\\escapeplan\\output.txt'
-    outputfile = open(path, "w") # Open the file for appending
     for i in range(0, len(scenarios)):
-        outputfile.write("Scenario {}\n".format(i + 1))
+        print("Scenario {}".format(i + 1))
         escaped_robots_count = 0
         robots = scenarios[i][0] # Get robots for this scenario
         holes = scenarios[i][1]
@@ -125,20 +145,28 @@ def main():
                 # Calculate closest hole for each robot
                 robots_closest_holes = calculate_closest_hole(robots, holes)
                 # Find positions of robots after times[k] seconds
-                robot = robots[i]
-                if move_robot(robot, times[k], holes[robots_closest_holes[i]]):
+                robot = robots[m] # Get robot
+                #returned_values_from_function = move_robot(robot, times[k], holes[robots_closest_holes[m]])
+                #print("Returned values from function: {}".format(returned_values_from_function))
+                print("This is the robot in the robots list: {}".format(robots[m]))
+                #robots[m] = returned_values_from_function[0]
+                #holesentered[robots_closest_holes[m]] = returned_values_from_function[1]
+                if move_robot(robot, times[k], holes[robots_closest_holes[m]]) and (holesentered[robots_closest_holes[m]] == False):
                     escaped_robots_count = escaped_robots_count + 1
-                    holesentered[robots_closest_holes[i]] = True
-                    del holesentered[robots_closest_holes[i]]
+                    holesentered[robots_closest_holes[m]] = True
+                    #print("Escaped robots count: {}".format(escaped_robots_count))
+                    print(holesentered)
+                    print("Robot new position: {}".format(robot))
+                    #print("Robot {} managed to escape in {} seconds".format(robots[m], times[k]))
             # Write to output file
-            outputfile.write("In {} seconds {} robot(s) can escape\n".format(times[k], escaped_robots_count))
+            print("In {} seconds {} robot(s) can escape".format(times[k], escaped_robots_count))
             # Reset values
             escaped_robots_count = 0
             for index in range(0, len(holes)):
                 holesentered[index] = False
         
-        if i < len(scenarios) - 1:
-            outputfile.write("\n")
+        if i < len(scenarios):
+            print("")
 
 if __name__ == '__main__':
     main()
