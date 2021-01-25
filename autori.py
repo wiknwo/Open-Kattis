@@ -19,7 +19,7 @@
 # We find mixing two conventions in one paper to be 
 # aesthetically unpleasing and would like you to write a 
 # program that will transform long variations into short.
-longversion = input("Enter last names separated by hyphens: ")
+longversion = input("")
 shortversion = longversion[0]
 for i in range(1, len(longversion)):
     if longversion[i] == '-':
