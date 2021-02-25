@@ -29,6 +29,7 @@ int main(){
 
     for(int i = 0;i < 10;i++) {
         cin >> number;
+		//  if(distinctValues.count(number % 42) == 1) also works
         const bool is_in = distinctValues.find(number % 42) != distinctValues.end();
         if(!is_in) distinctValues.insert(number % 42);
     }

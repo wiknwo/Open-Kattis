@@ -106,7 +106,7 @@ def main():
 
     # Compile output file
     path = 'C:\\Users\\willi\\Documents\\aCraft\\Open-Kattis\\escapeplan\\output.txt'
-    outputfile = open(path, "w") # Open the file for appending
+    outputfile = open(path, "w") # Open the file for writing
     for i in range(0, len(scenarios)):
         outputfile.write("Scenario {}\n".format(i + 1))
         escaped_robots_count = 0

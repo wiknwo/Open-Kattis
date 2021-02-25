@@ -23,10 +23,7 @@
 # Assume that each robot that can escape travels from 
 # its current position directly to a hole. All robots 
 # travel at a speed of 10 meters per second.
-from pprint import pprint
-from collections import defaultdict
 import math
-import sys
 
 def euclidean_distance(a, b):
     return math.sqrt((b[0] - a[0])**2 + (b[1] - a[1])**2)
@@ -56,46 +53,66 @@ def move_robot(robot, time, hole):
     for i in range(0, time):
         if xreached and yreached:
             holereached = True
-            print("x and y reached")
+            #print("x and y reached")
             return holereached # Here
+
         if robot_to_move[0] == hole[0]:
             xreached = True
-            print("x reached")
+            #print("x reached")
+
+        if distance_between_robot_hole_x < 10 and not xreached:
+            if robot_to_move[0] - hole[0] < 0:
+                robot_to_move[0] += distance_between_robot_hole_x
+                if robot_to_move[0] == hole[0]:
+                    # print(robot_to_move[0])
+                    xreached = True
+            elif robot_to_move[0] - hole[0] > 0:
+                robot_to_move[0] -= distance_between_robot_hole_x
+                if robot_to_move[0] == hole[0]:
+                    # print(robot_to_move[0])
+                    xreached = True
+            #robot_to_move[0] += distance_between_robot_hole_x
+            
+            
         if robot_to_move[1] == hole[1]:
             yreached = True
-            print("yreached")
-        if distance_between_robot_hole_x < 10 and distance_between_robot_hole_y < 10:
-            print("Robot {} within < 10m of hole so reached".format(robot))
-            holereached = True
-            return holereached
-        if distance_between_robot_hole_x < 10:
-            xreached = True
-            print("Robot {} within < 10m of hole in x direction so reached in x".format(robot))
-        if distance_between_robot_hole_y < 10:
-            yreached = True
-            print("Robot {} within < 10m of hole in y direction so reached in y".format(robot))
-        if robot_to_move[0] < hole[0]:
+            #print("yreached")
+
+        if distance_between_robot_hole_y < 10 and not yreached:
+            if robot_to_move[1] - hole[1] < 0:
+                robot_to_move[1] += distance_between_robot_hole_y
+                if robot_to_move[1] == hole[1]:
+                    # print(robot_to_move[1])
+                    yreached = True
+            elif robot_to_move[1] - hole[1] > 0:
+                robot_to_move[1] -= distance_between_robot_hole_y
+                if robot_to_move[1] == hole[1]:
+                    # print(robot_to_move[1])
+                    yreached = True
+            #robot_to_move[1] += distance_between_robot_hole_y
+            
+        if robot_to_move[0] < hole[0] and not xreached:
             robot_to_move[0] = robot_to_move[0] + 10
             distance_between_robot_hole_x = abs(robot_to_move[0] - hole[0])
-            print("Robot {} moved forward 10m in x direction".format(robot))
+            #print("Robot {} moved forward 10m in x direction".format(robot))
             
-        if robot[1] < hole[1]:
+        elif robot_to_move[1] < hole[1] and not yreached:
             robot[1] = robot_to_move[1] + 10
             distance_between_robot_hole_y = abs(robot_to_move[1] - hole[1])
-            print("Robot {} moved up 10m in y direction".format(robot))
+            #print("Robot {} moved up 10m in y direction".format(robot))
             
-        if robot_to_move[0] > hole[0]:
+        elif robot_to_move[0] > hole[0] and not xreached:
             robot_to_move[0] = robot_to_move[0] - 10
             distance_between_robot_hole_x = abs(robot_to_move[0] - hole[0])
-            print("Robot {} moved back 10m in x direction".format(robot))
+            #print("Robot {} moved back 10m in x direction".format(robot))
             
-        if robot_to_move[1] > hole[1]:
+        elif robot_to_move[1] > hole[1] and not yreached:
             robot_to_move[1] = robot_to_move[1] - 10
             distance_between_robot_hole_y = abs(robot_to_move[1] - hole[1])
-            print("Robot {} moved down 10m in y direction".format(robot))
+            #print("Robot {} moved down 10m in y direction".format(robot))
             
     return holereached
-
+        
 def main():
     # Reading data in from console
     scenarios = [] # list to hold scenarios
@@ -103,7 +120,8 @@ def main():
 
     # do while loop in python
     while True:
-        numberofrobots = int(input("Enter numer of robots: ")) 
+       # numberofrobots = int(input("Enter numer of robots: ")) 
+        numberofrobots = int(input("")) 
 
         # Leave loop when there are no more scenarios left
         if numberofrobots == 0:
@@ -112,15 +130,17 @@ def main():
         # Getting robot coordinates
         robots = []
         for i in range(0, numberofrobots):
-            coordinates = input("Enter coordinates of robot separated by space: ").split(" ")
+            #coordinates = input("Enter coordinates of robot separated by space: ").split(" ")
+            coordinates = input("").split(" ")
             robots.append([float(coordinates[0]), float(coordinates[1])])
         
-        numberofholes = int(input("Enter number of holes: "))
+        numberofholes = int(input(""))
 
         # Getting coordinates of holes
         holes = []
         for i in range(0, numberofholes):
-            coordinates = input("Enter coordinates of hole separated by space: ").split(" ")
+            #coordinates = input("Enter coordinates of hole separated by space: ").split(" ")
+            coordinates = input("").split(" ")
             holes.append([float(coordinates[0]), float(coordinates[1])])
 
         # Record scenario
@@ -146,17 +166,12 @@ def main():
                 robots_closest_holes = calculate_closest_hole(robots, holes)
                 # Find positions of robots after times[k] seconds
                 robot = robots[m] # Get robot
-                #returned_values_from_function = move_robot(robot, times[k], holes[robots_closest_holes[m]])
-                #print("Returned values from function: {}".format(returned_values_from_function))
-                print("This is the robot in the robots list: {}".format(robots[m]))
-                #robots[m] = returned_values_from_function[0]
-                #holesentered[robots_closest_holes[m]] = returned_values_from_function[1]
                 if move_robot(robot, times[k], holes[robots_closest_holes[m]]) and (holesentered[robots_closest_holes[m]] == False):
                     escaped_robots_count = escaped_robots_count + 1
                     holesentered[robots_closest_holes[m]] = True
                     #print("Escaped robots count: {}".format(escaped_robots_count))
-                    print(holesentered)
-                    print("Robot new position: {}".format(robot))
+                    #print(holesentered)
+                    #print("Robot new position: {}".format(robot))
                     #print("Robot {} managed to escape in {} seconds".format(robots[m], times[k]))
             # Write to output file
             print("In {} seconds {} robot(s) can escape".format(times[k], escaped_robots_count))

@@ -62,8 +62,5 @@ def main():
             print("{} | {}".format(new_list[i][0], new_list[i][1]))
         zoo.clear() # Reset the zoo
 
-
-
-
 if __name__ == '__main__':
     main()

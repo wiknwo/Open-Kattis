@@ -45,5 +45,6 @@ def main():
         for i in range(0, n + 1):
             approximation += 1 / math.factorial(i)
         print(approximation)
+        
 if __name__ == '__main__':
     main()
