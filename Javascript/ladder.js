@@ -16,16 +16,20 @@
  * length of the ladder in centimeters, rounded up to the 
  * nearest integer.
  **/
-const readLine = require('readline');
+const readline = require('readline');
 
-var line; // Read lines from stdin
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-// Getting user input
-while(line = readline()){
+rl.on('line', (line) => {
     var data = line.split(' ');
     var h = parseInt(data[0]);
     var v = parseInt(data[1]);
-}
 
-var hypotenuse = h / Math.sin(v);
-print(hypotenuse);
+    var hypotenuse = Math.ceil(h / Math.sin(v * Math.PI / 180));
+    console.log(hypotenuse);
+    /*Solve the test case and output the answer*/
+});
+
