@@ -1,7 +1,7 @@
 /**
  * Quadrant Selection
  * 
- * William Ikenna-Nwosu
+ * William Ikenna-Nwosu (wiknwo)
  * 
  * A common problem in mathematics is to determine which 
  * quadrant a given point lies in. There are four 

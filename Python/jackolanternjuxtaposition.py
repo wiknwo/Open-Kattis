@@ -1,6 +1,6 @@
 '''jackolanternjuxtaposition
 
-    William Ikenna-Nwosu
+    William Ikenna-Nwosu (wiknwo)
 
     Every year, Pumpkin Pete comes up with a couple of 
     different Jack-O’-Lantern ideas for his annual Halloween 
